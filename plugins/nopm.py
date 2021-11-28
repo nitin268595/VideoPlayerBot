@@ -16,6 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>
 """
 
+from datetime import datetime
+from sys import version_info
+from time import time
 import asyncio
 from pyrogram import Client, filters
 from helpers.bot_utils import USERNAME
@@ -50,3 +53,11 @@ async def nopm(client, message):
         except Exception as e:
             print(e)
             pass
+
+@Client.on_message(command(["ping", f"ping@{BOT_USERNAME}"]) & ~filters.edited)
+async def ping_pong(client: Client, message: Message):
+    start = time()
+    m_reply = await message.reply_text("pinging...")
+    delta_ping = time() - start
+    await m_reply.edit_text("🏓 `PONG!!`\n" f"⚡️ `{delta_ping * 1000:.3f} ms`")
+
